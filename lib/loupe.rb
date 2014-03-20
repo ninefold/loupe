@@ -4,7 +4,7 @@ require 'gemnasium/parser'
 module Loupe
 
   class Lens
-    attr_reader :gemfile, :bad_gems, :environments
+    attr_reader :bad_gems, :environments
 
     def initialize(gemfile, bad_gems, environments = nil)
       @gemfile = gemfile
@@ -14,6 +14,14 @@ module Loupe
 
     def default_environments
       [:production, :staging, :default]
+    end
+
+    def gemfile
+      @gemfile.include?('/Gemfile') ? read_gemfile : @gemfile
+    end
+
+    def read_gemfile
+      @gemfile = File.open(@gemfile, "rb").read
     end
 
     def analyse

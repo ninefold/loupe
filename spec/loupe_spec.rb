@@ -30,4 +30,12 @@ describe Loupe::Lens do
     expect(lens.dependencies.collect(&:name)).to eq %w{rails mysql2 rails_12factor rspec-rails sqlite3}
   end
 
+  describe "loading gemfile" do
+    let(:path) { File.dirname(__FILE__).gsub('spec','Gemfile') }
+    let(:lens) { Loupe::Lens.new(path, bad_gems) }
+
+    it "loads from path" do
+      expect(lens.gemfile).to include "source 'https://rubygems.org'"
+    end
+  end
 end
